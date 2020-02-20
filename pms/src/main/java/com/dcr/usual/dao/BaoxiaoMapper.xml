@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcr.usual.dao.BaoxiaoMapper">
+  <resultMap id="BaseResultMap" type="com.dcr.usual.bean.Baoxiao">
+    <id column="bxid" jdbcType="VARCHAR" property="bxid" />
+    <result column="paymode" jdbcType="VARCHAR" property="paymode" />
+    <result column="totalmoney" jdbcType="DOUBLE" property="totalmoney" />
+    <result column="bxtime" jdbcType="DATE" property="bxtime" />
+    <result column="bxremark" jdbcType="VARCHAR" property="bxremark" />
+    <result column="bxstatus" jdbcType="INTEGER" property="bxstatus" />
+    <result column="emp_fk" jdbcType="INTEGER" property="empFk" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    bxid, paymode, totalmoney, bxtime, bxremark, bxstatus, emp_fk, result
+  </sql>
+  <select id="selectByExample" parameterType="com.dcr.usual.bean.BaoxiaoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from baoxiao
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from baoxiao
+    where bxid = #{bxid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from baoxiao
+    where bxid = #{bxid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dcr.usual.bean.BaoxiaoExample">
+    delete from baoxiao
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dcr.usual.bean.Baoxiao">
+    insert into baoxiao (bxid, paymode, totalmoney, 
+      bxtime, bxremark, bxstatus, 
+      emp_fk, result)
+    values (#{bxid,jdbcType=VARCHAR}, #{paymode,jdbcType=VARCHAR}, #{totalmoney,jdbcType=DOUBLE}, 
+      #{bxtime,jdbcType=DATE}, #{bxremark,jdbcType=VARCHAR}, #{bxstatus,jdbcType=INTEGER}, 
+      #{empFk,jdbcType=INTEGER}, #{result,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dcr.usual.bean.Baoxiao">
+    insert into baoxiao
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="bxid != null">
+        bxid,
+      </if>
+      <if test="paymode != null">
+        paymode,
+      </if>
+      <if test="totalmoney != null">
+        totalmoney,
+      </if>
+      <if test="bxtime != null">
+        bxtime,
+      </if>
+      <if test="bxremark != null">
+        bxremark,
+      </if>
+      <if test="bxstatus != null">
+        bxstatus,
+      </if>
+      <if test="empFk != null">
+        emp_fk,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="bxid != null">
+        #{bxid,jdbcType=VARCHAR},
+      </if>
+      <if test="paymode != null">
+        #{paymode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalmoney != null">
+        #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bxtime != null">
+        #{bxtime,jdbcType=DATE},
+      </if>
+      <if test="bxremark != null">
+        #{bxremark,jdbcType=VARCHAR},
+      </if>
+      <if test="bxstatus != null">
+        #{bxstatus,jdbcType=INTEGER},
+      </if>
+      <if test="empFk != null">
+        #{empFk,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dcr.usual.bean.BaoxiaoExample" resultType="java.lang.Long">
+    select count(*) from baoxiao
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update baoxiao
+    <set>
+      <if test="record.bxid != null">
+        bxid = #{record.bxid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paymode != null">
+        paymode = #{record.paymode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.totalmoney != null">
+        totalmoney = #{record.totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.bxtime != null">
+        bxtime = #{record.bxtime,jdbcType=DATE},
+      </if>
+      <if test="record.bxremark != null">
+        bxremark = #{record.bxremark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bxstatus != null">
+        bxstatus = #{record.bxstatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.empFk != null">
+        emp_fk = #{record.empFk,jdbcType=INTEGER},
+      </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update baoxiao
+    set bxid = #{record.bxid,jdbcType=VARCHAR},
+      paymode = #{record.paymode,jdbcType=VARCHAR},
+      totalmoney = #{record.totalmoney,jdbcType=DOUBLE},
+      bxtime = #{record.bxtime,jdbcType=DATE},
+      bxremark = #{record.bxremark,jdbcType=VARCHAR},
+      bxstatus = #{record.bxstatus,jdbcType=INTEGER},
+      emp_fk = #{record.empFk,jdbcType=INTEGER},
+      result = #{record.result,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dcr.usual.bean.Baoxiao">
+    update baoxiao
+    <set>
+      <if test="paymode != null">
+        paymode = #{paymode,jdbcType=VARCHAR},
+      </if>
+      <if test="totalmoney != null">
+        totalmoney = #{totalmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="bxtime != null">
+        bxtime = #{bxtime,jdbcType=DATE},
+      </if>
+      <if test="bxremark != null">
+        bxremark = #{bxremark,jdbcType=VARCHAR},
+      </if>
+      <if test="bxstatus != null">
+        bxstatus = #{bxstatus,jdbcType=INTEGER},
+      </if>
+      <if test="empFk != null">
+        emp_fk = #{empFk,jdbcType=INTEGER},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where bxid = #{bxid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dcr.usual.bean.Baoxiao">
+    update baoxiao
+    set paymode = #{paymode,jdbcType=VARCHAR},
+      totalmoney = #{totalmoney,jdbcType=DOUBLE},
+      bxtime = #{bxtime,jdbcType=DATE},
+      bxremark = #{bxremark,jdbcType=VARCHAR},
+      bxstatus = #{bxstatus,jdbcType=INTEGER},
+      emp_fk = #{empFk,jdbcType=INTEGER},
+      result = #{result,jdbcType=VARCHAR}
+    where bxid = #{bxid,jdbcType=VARCHAR}
+  </update>
+</mapper>

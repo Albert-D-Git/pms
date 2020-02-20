@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="static/js/vuejs-2.5.16.js"></script>
+    <style>
+        [v-cloack]{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+
+        <h1 v-if="!flag">看不到我</h1>
+<!--        插值表达式-->
+        <h1 v-cloack>---{{msg}}---</h1>
+        <h1 v-text="msg">----</h1>
+        <h1 v-html="msg">----</h1>
+        <input type="text" v-bind:value="flag"/>
+        <input type="text" :value="flag"/> <!--v-bind可以省略-->
+-----------------------------------------------
+        <input type="text" v-model="msg">
+        =--------
+        <!--v-on：跟事件名称=方法名   ==>v-on： 可以简写为@-->
+        <button @click="dianwo">点我</button>
+        <button v-on:mouseenter="dianwo()" v-on:mousemove="dianwo()">点我</button>
+        </p>
+        {{msg}}
+        </p>
+        {{number+3}}
+        <h1 v-cloack>{{flag?"yes":"no"}}</h1> <!--网速太慢未请求回来数据时候不显示,在上面设置css样式-->
+    </div>
+<script type="text/javascript">
+    new Vue({
+        el:"#app",
+        data:{
+            msg:"<div style='color:red'>欢迎使用Vue</div>",
+            number:10,
+            flag:false
+        },
+        methods:{
+            dianwo:function(){
+                alert("哈哈 你再点一遍");
+            }
+        }
+    });
+</script>
+</body>
+</html>

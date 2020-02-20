@@ -1,0 +1,415 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcr.pro.dao.ProjectMapper">
+  <resultMap id="BaseResultMap" type="com.dcr.pro.bean.Project">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="comname" jdbcType="INTEGER" property="comname" />
+    <result column="comper" jdbcType="VARCHAR" property="comper" />
+    <result column="emp_fk1" jdbcType="INTEGER" property="empFk1" />
+    <result column="empcount" jdbcType="INTEGER" property="empcount" />
+    <result column="starttime" jdbcType="DATE" property="starttime" />
+    <result column="buildtime" jdbcType="DATE" property="buildtime" />
+    <result column="cost" jdbcType="INTEGER" property="cost" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="endtime" jdbcType="DATE" property="endtime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="emp_fk" jdbcType="INTEGER" property="empFk" />
+
+
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    pid, pname, comname, comper, emp_fk1, empcount, starttime, buildtime, cost, level, 
+    endtime, remark, emp_fk
+  </sql>
+  <select id="selectByExample" parameterType="com.dcr.pro.bean.ProjectExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from project
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from project
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dcr.pro.bean.ProjectExample">
+    delete from project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dcr.pro.bean.Project">
+    insert into project (pid, pname, comname, 
+      comper, emp_fk1, empcount, 
+      starttime, buildtime, cost, 
+      level, endtime, remark, 
+      emp_fk)
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{comname,jdbcType=INTEGER}, 
+      #{comper,jdbcType=VARCHAR}, #{empFk1,jdbcType=INTEGER}, #{empcount,jdbcType=INTEGER}, 
+      #{starttime,jdbcType=DATE}, #{buildtime,jdbcType=DATE}, #{cost,jdbcType=INTEGER}, 
+      #{level,jdbcType=VARCHAR}, #{endtime,jdbcType=DATE}, #{remark,jdbcType=VARCHAR}, 
+      #{empFk,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dcr.pro.bean.Project">
+    insert into project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        pid,
+      </if>
+      <if test="pname != null">
+        pname,
+      </if>
+      <if test="comname != null">
+        comname,
+      </if>
+      <if test="comper != null">
+        comper,
+      </if>
+      <if test="empFk1 != null">
+        emp_fk1,
+      </if>
+      <if test="empcount != null">
+        empcount,
+      </if>
+      <if test="starttime != null">
+        starttime,
+      </if>
+      <if test="buildtime != null">
+        buildtime,
+      </if>
+      <if test="cost != null">
+        cost,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="endtime != null">
+        endtime,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="empFk != null">
+        emp_fk,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pid != null">
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="pname != null">
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="comname != null">
+        #{comname,jdbcType=INTEGER},
+      </if>
+      <if test="comper != null">
+        #{comper,jdbcType=VARCHAR},
+      </if>
+      <if test="empFk1 != null">
+        #{empFk1,jdbcType=INTEGER},
+      </if>
+      <if test="empcount != null">
+        #{empcount,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        #{starttime,jdbcType=DATE},
+      </if>
+      <if test="buildtime != null">
+        #{buildtime,jdbcType=DATE},
+      </if>
+      <if test="cost != null">
+        #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        #{endtime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="empFk != null">
+        #{empFk,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dcr.pro.bean.ProjectExample" resultType="java.lang.Long">
+    select count(*) from project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update project
+    <set>
+      <if test="record.pid != null">
+        pid = #{record.pid,jdbcType=INTEGER},
+      </if>
+      <if test="record.pname != null">
+        pname = #{record.pname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.comname != null">
+        comname = #{record.comname,jdbcType=INTEGER},
+      </if>
+      <if test="record.comper != null">
+        comper = #{record.comper,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empFk1 != null">
+        emp_fk1 = #{record.empFk1,jdbcType=INTEGER},
+      </if>
+      <if test="record.empcount != null">
+        empcount = #{record.empcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.starttime != null">
+        starttime = #{record.starttime,jdbcType=DATE},
+      </if>
+      <if test="record.buildtime != null">
+        buildtime = #{record.buildtime,jdbcType=DATE},
+      </if>
+      <if test="record.cost != null">
+        cost = #{record.cost,jdbcType=INTEGER},
+      </if>
+      <if test="record.level != null">
+        level = #{record.level,jdbcType=VARCHAR},
+      </if>
+      <if test="record.endtime != null">
+        endtime = #{record.endtime,jdbcType=DATE},
+      </if>
+      <if test="record.remark != null">
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empFk != null">
+        emp_fk = #{record.empFk,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update project
+    set pid = #{record.pid,jdbcType=INTEGER},
+      pname = #{record.pname,jdbcType=VARCHAR},
+      comname = #{record.comname,jdbcType=INTEGER},
+      comper = #{record.comper,jdbcType=VARCHAR},
+      emp_fk1 = #{record.empFk1,jdbcType=INTEGER},
+      empcount = #{record.empcount,jdbcType=INTEGER},
+      starttime = #{record.starttime,jdbcType=DATE},
+      buildtime = #{record.buildtime,jdbcType=DATE},
+      cost = #{record.cost,jdbcType=INTEGER},
+      level = #{record.level,jdbcType=VARCHAR},
+      endtime = #{record.endtime,jdbcType=DATE},
+      remark = #{record.remark,jdbcType=VARCHAR},
+      emp_fk = #{record.empFk,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dcr.pro.bean.Project">
+    update project
+    <set>
+      <if test="pname != null">
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="comname != null">
+        comname = #{comname,jdbcType=INTEGER},
+      </if>
+      <if test="comper != null">
+        comper = #{comper,jdbcType=VARCHAR},
+      </if>
+      <if test="empFk1 != null">
+        emp_fk1 = #{empFk1,jdbcType=INTEGER},
+      </if>
+      <if test="empcount != null">
+        empcount = #{empcount,jdbcType=INTEGER},
+      </if>
+      <if test="starttime != null">
+        starttime = #{starttime,jdbcType=DATE},
+      </if>
+      <if test="buildtime != null">
+        buildtime = #{buildtime,jdbcType=DATE},
+      </if>
+      <if test="cost != null">
+        cost = #{cost,jdbcType=INTEGER},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="endtime != null">
+        endtime = #{endtime,jdbcType=DATE},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="empFk != null">
+        emp_fk = #{empFk,jdbcType=INTEGER},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dcr.pro.bean.Project">
+    update project
+    set pname = #{pname,jdbcType=VARCHAR},
+      comname = #{comname,jdbcType=INTEGER},
+      comper = #{comper,jdbcType=VARCHAR},
+      emp_fk1 = #{empFk1,jdbcType=INTEGER},
+      empcount = #{empcount,jdbcType=INTEGER},
+      starttime = #{starttime,jdbcType=DATE},
+      buildtime = #{buildtime,jdbcType=DATE},
+      cost = #{cost,jdbcType=INTEGER},
+      level = #{level,jdbcType=VARCHAR},
+      endtime = #{endtime,jdbcType=DATE},
+      remark = #{remark,jdbcType=VARCHAR},
+      emp_fk = #{empFk,jdbcType=INTEGER}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+
+  <!--自己加的-->
+
+
+  <resultMap id="findProjectResultMap" type="com.dcr.pro.bean.Project">
+    <id column="pid" jdbcType="INTEGER" property="pid" />
+    <result column="pname" jdbcType="VARCHAR" property="pname" />
+    <result column="comname" jdbcType="INTEGER" property="comname" />
+    <result column="comper" jdbcType="VARCHAR" property="comper" />
+    <result column="emp_fk1" jdbcType="INTEGER" property="empFk1" />
+    <result column="empcount" jdbcType="INTEGER" property="empcount" />
+    <result column="starttime" jdbcType="DATE" property="starttime" />
+    <result column="buildtime" jdbcType="DATE" property="buildtime" />
+    <result column="cost" jdbcType="INTEGER" property="cost" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="endtime" jdbcType="DATE" property="endtime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="emp_fk" jdbcType="INTEGER" property="empFk" />
+    <!--增加的-->
+    <!--对多查询-->
+    <!--    <collection property="customer" select="com.dcr.cust.dao.CustomerMapper.selectByPrimaryKey" column="comname"></collection>-->
+    <!--    <collection property="employee" select="com.dcr.emp.dao.EmployeeMapper.selectByPrimaryKey" column="emp_fk"></collection>-->
+    <!--对一-->
+    <association property="customer" select="com.dcr.cust.dao.CustomerMapper.selectByPrimaryKey" column="comname"></association>
+    <association property="employee" select="com.dcr.emp.dao.EmployeeMapper.selectByPrimaryKey" column="emp_fk"></association>
+
+  </resultMap>
+
+  <select id="findProject" resultMap="findProjectResultMap">
+   SELECT p.*,c.*,e.*
+    FROM project p
+    LEFT JOIN customer c
+    ON p.`comname`=c.`id`
+    LEFT JOIN employee e
+    ON p.`emp_fk`=e.eid
+    <where>
+      <if test="cid==0">
+        p.pname like '%${keyword}%' or e.ename like '%${keyword}%'
+      </if>
+      <if test="cid==1">
+        p.pname like '%${keyword}%'
+      </if>
+      <if test="cid==2">
+        e.ename like '%${keyword}%'
+      </if>
+    </where>
+    <if test="orderby==1">
+      order by p.buildtime
+    </if>
+    <if test="orderby==2">
+      order by p.endtime
+    </if>
+
+  </select>
+
+
+  <select id="com.dcr.pro.dao.ProjectMapper.getProListWithoutAnalyze" resultType="com.dcr.pro.bean.Project">
+    SELECT pid, pname FROM project WHERE pid NOT IN (SELECT id FROM analysis)
+  </select>
+
+
+  <select id="selectAllPro" parameterType="com.dcr.pro.bean.ProjectExample" resultMap="findProjectResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from project
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+</mapper>

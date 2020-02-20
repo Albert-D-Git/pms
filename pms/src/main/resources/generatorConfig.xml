@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<!-- 
+		无Example等内容
+		<context id="Mysql" targetRuntime="MyBatis3Simple" defaultModelType="flat">	
+	 -->
+	 
+	 <!-- 有Example查询条件内容 -->
+	<context id="testTables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		
+		<!--数据库连接的信息：驱动类、连接地址、用户名、密码 -->
+		<jdbcConnection 
+			driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/crmpro"
+			userId="root"
+			password="123456">
+		</jdbcConnection>
+
+		<!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和 
+			NUMERIC 类型解析为java.math.BigDecimal -->
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- targetProject:生成Entity类的路径 -->
+		<javaModelGenerator targetProject=".\src" targetPackage="bean">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+			<!-- 从数据库返回的值被清理前后的空格 -->
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		
+        <!-- targetProject:XXXMapper.xml映射文件生成的路径 -->
+		<sqlMapGenerator targetProject=".\src" targetPackage="dao">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</sqlMapGenerator>
+		
+		<!-- targetPackage：Mapper接口生成的位置 -->
+		<javaClientGenerator type="XMLMAPPER" targetProject=".\src" targetPackage="dao">
+			<!-- enableSubPackages:是否让schema作为包的后缀 -->
+			<property name="enableSubPackages" value="false" />
+		</javaClientGenerator>
+
+		<!-- 数据库表名字和我们的entity类对应的映射指定 -->
+		<table tableName="analysis" 	domainObjectName="Analysis"/>
+		<table tableName="archives" 	domainObjectName="Archives"/>
+		<table tableName="attachment" 	domainObjectName="Attachment"/>
+		<table tableName="baoxiao" 	domainObjectName="Baoxiao"/>
+		<table tableName="customer" 	domainObjectName="Customer"/>
+		<table tableName="datacollect" 	domainObjectName="Datacollect"/>
+		<table tableName="dept" 	domainObjectName="Dept"/>
+		<table tableName="email" 	domainObjectName="Email"/>
+		<table tableName="emp_role" 	domainObjectName="EmpRole"/>
+		<table tableName="employee" 	domainObjectName="Employee"/>
+		<table tableName="evaluate" 	domainObjectName="Evaluate"/>
+		<table tableName="forumpost" 	domainObjectName="Forumpost"/>
+		<table tableName="function" 	domainObjectName="Function"/>
+		<table tableName="indexvalue" 	domainObjectName="Indexvalue"/>
+		<table tableName="level" 	domainObjectName="Level"/>
+		<table tableName="module" 	domainObjectName="Module"/>
+		<table tableName="msg" 	domainObjectName="Msg"/>
+		<table tableName="notice" 	domainObjectName="Notice"/>
+		<table tableName="position" 	domainObjectName="Position"/>
+		<table tableName="project" 	domainObjectName="Project"/>
+		<table tableName="role" 	domainObjectName="Role"/>
+		<table tableName="role_sources" 	domainObjectName="RoleSources"/>
+		<table tableName="sources" 	domainObjectName="Sources"/>
+		<table tableName="task" 	domainObjectName="Task"/>
+		<table tableName="comparision" domainObjectName="Comparision"/>
+<!-- 		<table tableName="dept" 	domainObjectName="Dept"/>
+		<table tableName="employee" 	domainObjectName="employee"/> -->
+		
+		<!-- 有些表的字段需要指定java类型
+		 <table schema="" tableName="">
+			<columnOverride column="" javaType="" />
+		</table> -->
+	</context>
+</generatorConfiguration>

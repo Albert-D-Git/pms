@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dcr.analyse.dao.ComparisionMapper">
+  <resultMap id="BaseResultMap" type="com.dcr.analyse.bean.Comparision">
+    <id column="cid" jdbcType="INTEGER" property="cid" />
+    <result column="company" jdbcType="VARCHAR" property="company" />
+    <result column="targetMoney" jdbcType="DOUBLE" property="targetmoney" />
+    <result column="YEAR" jdbcType="VARCHAR" property="year" />
+    <result column="business" jdbcType="VARCHAR" property="business" />
+    <result column="priority" jdbcType="VARCHAR" property="priority" />
+    <result column="bad" jdbcType="VARCHAR" property="bad" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="empCount" jdbcType="INTEGER" property="empcount" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="empFk" jdbcType="INTEGER" property="empfk" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cid, company, targetMoney, YEAR, business, priority, bad, status, empCount, date, 
+    description, empFk
+  </sql>
+  <select id="selectByExample" parameterType="com.dcr.analyse.bean.ComparisionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from comparision
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from comparision
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from comparision
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.dcr.analyse.bean.ComparisionExample">
+    delete from comparision
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.dcr.analyse.bean.Comparision">
+    insert into comparision (cid, company, targetMoney, 
+      YEAR, business, priority, 
+      bad, status, empCount, 
+      date, description, empFk
+      )
+    values (#{cid,jdbcType=INTEGER}, #{company,jdbcType=VARCHAR}, #{targetmoney,jdbcType=DOUBLE}, 
+      #{year,jdbcType=VARCHAR}, #{business,jdbcType=VARCHAR}, #{priority,jdbcType=VARCHAR}, 
+      #{bad,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{empcount,jdbcType=INTEGER}, 
+      #{date,jdbcType=DATE}, #{description,jdbcType=VARCHAR}, #{empfk,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.dcr.analyse.bean.Comparision">
+    insert into comparision
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        cid,
+      </if>
+      <if test="company != null">
+        company,
+      </if>
+      <if test="targetmoney != null">
+        targetMoney,
+      </if>
+      <if test="year != null">
+        YEAR,
+      </if>
+      <if test="business != null">
+        business,
+      </if>
+      <if test="priority != null">
+        priority,
+      </if>
+      <if test="bad != null">
+        bad,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="empcount != null">
+        empCount,
+      </if>
+      <if test="date != null">
+        date,
+      </if>
+      <if test="description != null">
+        description,
+      </if>
+      <if test="empfk != null">
+        empFk,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cid != null">
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="company != null">
+        #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="targetmoney != null">
+        #{targetmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="year != null">
+        #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="business != null">
+        #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="bad != null">
+        #{bad,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="empcount != null">
+        #{empcount,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        #{date,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="empfk != null">
+        #{empfk,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.dcr.analyse.bean.ComparisionExample" resultType="java.lang.Long">
+    select count(*) from comparision
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update comparision
+    <set>
+      <if test="record.cid != null">
+        cid = #{record.cid,jdbcType=INTEGER},
+      </if>
+      <if test="record.company != null">
+        company = #{record.company,jdbcType=VARCHAR},
+      </if>
+      <if test="record.targetmoney != null">
+        targetMoney = #{record.targetmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="record.year != null">
+        YEAR = #{record.year,jdbcType=VARCHAR},
+      </if>
+      <if test="record.business != null">
+        business = #{record.business,jdbcType=VARCHAR},
+      </if>
+      <if test="record.priority != null">
+        priority = #{record.priority,jdbcType=VARCHAR},
+      </if>
+      <if test="record.bad != null">
+        bad = #{record.bad,jdbcType=VARCHAR},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empcount != null">
+        empCount = #{record.empcount,jdbcType=INTEGER},
+      </if>
+      <if test="record.date != null">
+        date = #{record.date,jdbcType=DATE},
+      </if>
+      <if test="record.description != null">
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empfk != null">
+        empFk = #{record.empfk,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update comparision
+    set cid = #{record.cid,jdbcType=INTEGER},
+      company = #{record.company,jdbcType=VARCHAR},
+      targetMoney = #{record.targetmoney,jdbcType=DOUBLE},
+      YEAR = #{record.year,jdbcType=VARCHAR},
+      business = #{record.business,jdbcType=VARCHAR},
+      priority = #{record.priority,jdbcType=VARCHAR},
+      bad = #{record.bad,jdbcType=VARCHAR},
+      status = #{record.status,jdbcType=VARCHAR},
+      empCount = #{record.empcount,jdbcType=INTEGER},
+      date = #{record.date,jdbcType=DATE},
+      description = #{record.description,jdbcType=VARCHAR},
+      empFk = #{record.empfk,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dcr.analyse.bean.Comparision">
+    update comparision
+    <set>
+      <if test="company != null">
+        company = #{company,jdbcType=VARCHAR},
+      </if>
+      <if test="targetmoney != null">
+        targetMoney = #{targetmoney,jdbcType=DOUBLE},
+      </if>
+      <if test="year != null">
+        YEAR = #{year,jdbcType=VARCHAR},
+      </if>
+      <if test="business != null">
+        business = #{business,jdbcType=VARCHAR},
+      </if>
+      <if test="priority != null">
+        priority = #{priority,jdbcType=VARCHAR},
+      </if>
+      <if test="bad != null">
+        bad = #{bad,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="empcount != null">
+        empCount = #{empcount,jdbcType=INTEGER},
+      </if>
+      <if test="date != null">
+        date = #{date,jdbcType=DATE},
+      </if>
+      <if test="description != null">
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="empfk != null">
+        empFk = #{empfk,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dcr.analyse.bean.Comparision">
+    update comparision
+    set company = #{company,jdbcType=VARCHAR},
+      targetMoney = #{targetmoney,jdbcType=DOUBLE},
+      YEAR = #{year,jdbcType=VARCHAR},
+      business = #{business,jdbcType=VARCHAR},
+      priority = #{priority,jdbcType=VARCHAR},
+      bad = #{bad,jdbcType=VARCHAR},
+      status = #{status,jdbcType=VARCHAR},
+      empCount = #{empcount,jdbcType=INTEGER},
+      date = #{date,jdbcType=DATE},
+      description = #{description,jdbcType=VARCHAR},
+      empFk = #{empfk,jdbcType=INTEGER}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+</mapper>

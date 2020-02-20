@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    1引入js-->
+    <script type="text/javascript" src="static/js/echarts.js"></script>
+    <script type="text/javascript" src="static/js/jquery-1.7.2.js"></script>
+</head>
+<body>
+<!--2创建容器-->
+<div id="main" style="width: 600px;height:400px;"></div>
+
+<script type="text/javascript">
+    $(function () {
+
+        var names=[];
+        var scores=[];
+        $.ajax({
+            type:"GET",
+            url:"echart/data",
+            success:function (msg) {
+                //遍历json对象 for in
+                for (a in msg){
+                    names.push(a);
+                    scores.push(msg[a]);
+
+                    //3初始化echart
+                    var myChart = echarts.init(document.getElementById('main'));
+                    //5.指定数据
+                    var option = {
+                        title: {
+                            text: '各操作系统销量'
+                        },
+                        tooltip: {},
+                        legend: {
+                            data:['销量']
+                        },
+                        xAxis: {
+                            data: names
+                        },
+                        yAxis: {},
+                        series: [{
+                            name: '销量',
+                            type: 'bar',
+                            data: scores
+                        }]
+                    };
+
+                    //4.给图标设置数据
+                    myChart.setOption(option);
+                }
+            }
+        });
+
+    });
+</script>
+</body>
+</html>

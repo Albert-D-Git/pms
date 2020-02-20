@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="static/js/vuejs-2.5.16.js"></script>
+    <script src="https://cdn.bootcss.com/axios/0.19.0/axios.js"></script>
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+    <style>
+        .el-table .warning-row {
+            background: oldlace;
+        }
+
+        .el-table .success-row {
+            background: #f0f9eb;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <!--弹窗-->
+        <div>
+
+            <el-dialog :title="title" :visible.sync="dialogFormVisible">
+                <el-form :model="form" :rules="rules" ref="ruleForm">
+                    <el-form-item label="报销类型" :label-width="formLabelWidth" prop="paymode">
+                        <el-select v-model="form.paymode" placeholder="请选择报销类型">
+                            <el-option label="办公采购" value="办公采购"></el-option>
+                            <el-option label="差旅费用" value="差旅费用"></el-option>
+                            <el-option label="其他" value="其他"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="总金额" :label-width="formLabelWidth" prop="totalmoney">
+                        <el-input v-model.number="form.totalmoney" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="使用时间" :label-width="formLabelWidth" prop="bxtime">
+                        <el-date-picker
+                                v-model="form.bxtime"
+                                type="date"
+                                placeholder="选择日期"
+                                :picker-options="pickerOptions">>
+                        </el-date-picker>
+
+                    </el-form-item>
+<!--                    <el-form-item label="备注信息" :label-width="formLabelWidth">-->
+<!--                        <el-input v-model="form.bxremark" autocomplete="off"></el-input>-->
+<!--                    </el-form-item>-->
+                    <el-form-item label="备注信息" prop="bxremark">
+                        <el-input type="textarea" v-model="form.bxremark"></el-input>
+                    </el-form-item>
+                </el-form>
+                <div slot="footer" class="dialog-footer">
+                    <el-button @click="dialogFormVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit('ruleForm')">确 定</el-button>
+                </div>
+            </el-dialog>
+        </div>
+
+        <div style="margin:0 200px;text-align: center">
+            <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+                <el-form-item label="报销单状态">
+                    <el-select v-model="formInline.search_cid" placeholder="报销单状态">
+                        <el-option label="未审批" value="0"></el-option>
+                        <el-option label="已驳回" value="1"></el-option>
+                        <el-option label="已审批" value="2"></el-option>
+                        <el-option label="已付款" value="3"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="备注">
+                    <el-input v-model="formInline.search_keyword" placeholder="备注信息"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit">查询</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <!--列表信息-->
+        <div style="padding: 0 200px">
+            <el-table
+                    :data="list"
+                    style="width: 100%"
+                    :row-class-name="tableRowClassName"
+                    v-loading="loading"
+                    element-loading-text="拼命加载中"
+                    element-loading-spinner="el-icon-loading"
+                    element-loading-background="rgba(0, 0, 0, 0.8)">
+                <el-table-column
+                        prop="bxid"
+                        label="报销id"
+                        align="center">
+                    <template slot-scope="scope">
+                        {{scope.row.bxid}}
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                        prop="paymode"
+                        label="报销类型"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="totalmoney"
+                        label="总金额"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="bxtime"
+                        label="使用时间"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        prop="bxremark"
+                        label="备注信息"
+                        align="center">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        label="操作"
+                        width="100"
+                        align="center">
+                    <template slot-scope="scope">
+                        <el-button @click="del(scope.row.bxid)" type="text" size="small">删除</el-button>
+                        <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+        </div>
+        <!--分页信息-->
+        <div style="margin-left: 500px">
+            <el-pagination
+                    background
+                    layout="prev, pager, next, jumper"
+                    :pager-count="pagerCount"
+                    :total="totalRecord"
+                    :page-size="pageSize"
+                    :current-page="currentPage"
+                    @current-change="changeNum"><!--current-change绑定的方法会默认把改变后的页数传给方法里，直接接收就行-->
+
+            </el-pagination>
+        </div>
+        <!--添加按钮-->
+        <div style="margin-left: 47%">
+            <el-button type="primary" @click="addItem">添加</el-button>
+        </div>
+    </div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el:"#app",
+        data:{
+            queryStr:'',
+            formInline:{
+                search_cid:'',
+                search_keyword:''
+            },
+            pickerOptions: {
+                disabledDate(time) {
+                    return time.getTime() > Date.now();
+                }
+            },
+            dialogFormVisible:false,
+            formLabelWidth:'120px',
+            title:'添加报销单',
+            form:{
+                paymode:'',
+                totalmoney:'',
+                bxtime:'',
+                bxremark:'',
+                bxid:''
+            },
+            pagerCount:5,
+            loading: false,
+            pageSize:3,
+            totalRecord:1,
+            currentPage:1,
+            list:[],
+            tableRowClassName({row, rowIndex}) {
+                if (rowIndex === 1) {
+                    return 'warning-row';
+                } else if (rowIndex === 3) {
+                    return 'success-row';
+                }
+                return '';
+            },
+            rules: {
+                paymode: [
+                    { required: true, message: '请输入活动名称', trigger: 'blur' },
+                    { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
+                ],
+                totalmoney: [
+                    { required: true, message: '请选择活动区域', trigger: 'change'},
+                    { type: 'number', message: '年龄必须为数字值'}
+                ],
+                // bxtime: [
+                //     { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
+                // ],
+                bxremark: [
+                    {required: true, message: '请填写备注', trigger: 'blur' }
+                ]
+            }
+        },
+        methods:{
+            onSubmit:function(){
+                var _this = this;
+                axios.get('/pms/bx/list',{params:this.formInline})
+                     .then(function (msg) {
+                         _this.list=msg.data.map.page.list;
+                         _this.pageSize=msg.data.map.page.pageSize;
+                         _this.totalRecord=msg.data.map.page.total;
+                         _this.currentPage=msg.data.map.page.pageNum;
+                         _this.queryStr=msg.data.map.queryStr;
+                     }).catch();
+            },
+            addItem:function(){
+                this.dialogFormVisible = true;
+                this.title='添加报销单';
+                this.form={
+                        paymode:'',
+                        totalmoney:'',
+                        bxtime:'',
+                        bxremark:'',
+                        bxid:''
+                }
+            },
+            submit:function(arg){
+                var _this = this;
+                if(this.form.bxid==''){
+
+                    /*校验之后提交*/
+                    this.$refs[arg].validate(function (valid) {
+                        if (valid) {
+                            _this.dialogFormVisible=false;
+                            axios.post("/pms/bx/insert",_this.form)
+                                .then(function (msg) {
+                                    _this.$message({
+                                        type: 'success',
+                                        message: '添加成功!'
+                                    });
+                                    _this.fenye("/pms/bx/list");
+                                }).catch(function () {
+                                alert("系统正在升级，请稍后重试");
+                            });
+                        } else {
+                            alert('error submit!!');
+                            return false;
+                        }
+                    });
+                }else{
+                    axios.post("/pms/bx/edit",_this.form)
+                         .then(function (msg) {
+                             _this.dialogFormVisible=false;
+                             _this.$message({
+                                 type: 'success',
+                                 message: '修改成功!'
+                             });
+                             _this.fenye("/pms/bx/list",_this.form);
+                         }).catch(function () {
+                            alert("系统维护中！请稍后再试！");
+                    })
+                }
+
+
+            },
+            /*分页*/
+            fenye:function(url){
+                var _this = this;
+                _this.loading=true;
+                axios.get(url)
+                    .then(function (msg) {
+                        _this.list=msg.data.map.page.list;
+                        _this.pageSize=msg.data.map.page.pageSize;
+                        _this.totalRecord=msg.data.map.page.total;
+                        _this.currentPage=msg.data.map.page.pageNum;
+                        _this.loading=false;
+                    }).catch(function () {
+                    alert("系统正在升级，请稍后重试");
+                });
+            },
+
+            /*页面改变数据改变封装函数*/
+            changeNum:function (num) {
+                this.fenye("/pms/bx/list?pageNo="+num+this.queryStr);
+            },
+            del:function (id) {
+                var _this = this;
+
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    alert(id);
+                    axios.delete("/pms/bx/del/"+id)
+                         .then(function (msg) {
+                             _this.$message({
+                                 type: 'success',
+                                 message: '删除成功!'
+                             });
+                            _this.fenye("/pms/bx/list?pageNo="+1);
+                         }).catch(function () {
+                        alert("系统正在升级，请稍后重试");
+                    });
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+            },
+            edit:function(bxrow){
+                this.title='修改报销单';
+                /*传过来的是一列的值*/
+                this.dialogFormVisible=true;
+                this.form.bxid=bxrow.bxid;
+                this.form.paymode=bxrow.paymode;
+                this.form.totalmoney=bxrow.totalmoney;
+                this.form.bxtime=bxrow.bxtime;
+                this.form.bxremark=bxrow.bxremark;
+            }
+        },
+        mounted:function () {
+            this.fenye("/pms/bx/list");
+        },
+
+    });
+</script>
+</html>

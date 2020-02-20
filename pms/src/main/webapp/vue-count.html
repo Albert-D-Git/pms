@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="static/js/vuejs-2.5.16.js"></script>
+</head>
+<body>
+
+<div id="count">
+    <button v-on:click="sub">-</button>
+    <span>{{ num }}</span>
+    <button @click="add">+</button>
+    {{ num }}
+
+    <ul>
+        <li v-for="(it,ss) in city"> {{ss}}-{{it}}</li>
+    </ul>
+</div>
+</body>
+<script type="text/javascript">
+    new Vue({
+        el:"#count",
+        data:{
+            num:0,
+            city:["北京","上海","广州","深圳"]
+        },
+        methods:{
+            sub:function () {
+                if(this.num>0){
+                    this.num--;
+                }else{
+                    alert("别点了最小啦！");
+                }
+            },
+            add:function () {
+                if(this.num<10){
+                    this.num++;
+                }else{
+                    alert("别点了最大啦！");
+                }
+            }
+        }
+    });
+</script>
+</html>
