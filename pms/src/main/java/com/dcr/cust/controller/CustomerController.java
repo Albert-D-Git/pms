@@ -41,12 +41,12 @@ public class CustomerController {
     private HttpSession session;
 
 
-//    public ModelAndView getCustomerList(){
-//        ModelAndView mv = new ModelAndView("customer");
-//        List<Customer> list = customerService.getCustomerList();
-//        mv.addObject("list",list);
-//        return mv;
-//    }
+    public ModelAndView getCustomerList(){
+        ModelAndView mv = new ModelAndView("customer");
+        List<Customer> list = customerService.getCustomerList();
+        mv.addObject("list",list);
+        return mv;
+    }
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     public ModelAndView getCustomerList(@RequestParam(value = "pageNo",defaultValue = "1") Integer pageNo, HttpServletRequest request){
         //分页查询获取uri传回去
